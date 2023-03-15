@@ -1,60 +1,22 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
+//wsdl request
+var client = new XMLHttpRequest();
+client.open('GET', 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl');
+client.onreadystatechange = function () {
+  var request = client.responseText;//here the wsdl
 
-(async () => {
-  const browser = await puppeteer.launch({headless: false});
-  const page = await browser.newPage();
-  //await page.goto('https://www.bcb.gov.br/estatisticas/remuneradepositospoupanca');
+        //SOAP request
+        var client2 = new XMLHttpRequest();
+        client2.open('POST', 'http://83.212.96.238:8080/DgesvSampleWs/DgesvSampleWsService', true);
 
-  /*await page.goto("https://www.bcb.gov.br/estatisticas/remuneradepositospoupanca", {
-    waitUntil: "load",
-  }).catch((err) => console.log("error loading url", err));*/
+        client2.onreadystatechange = function () {
+          if (client2.readyState == 4) {
+            if (client2.status == 200) {
+              console.log(client.responseText);//here the response
+            }
+          }
+        }
+        client2.setRequestHeader('Content-Type', 'text/xml');
+        client2.send(request);
+}
 
-  /*await Promise.all([
-    page.goto("https://www.bcb.gov.br/estatisticas/remuneradepositospoupanca", {
-      waitUntil: "domcontentloaded",
-    }),
-    page.waitForSelector("table", { visible: true }),
-  ]);*/
-
-  await Promise.all([
-    page.goto("https://www.bcb.gov.br/estatisticas/remuneradepositospoupanca", {
-      waitUntil: "domcontentloaded",
-    }),
-    //page.waitForNetworkIdle({ idleTime: 30000 }),
-    page.waitForNavigation({ timeout: 60000 }),
-  ]);
-  
-  const tableArray = await page.evaluate(() => {
-    // toda essa função será executada no browser
-
-    // pega imagens que estão na parte de posts
-    const nodeList = document.querySelector('title');
-
-    //console.log(nodeList)
-    
-
-    // transforma o NodeList em array
-    //const imgArray = [...nodeList];
-
-    // transformar os nodes (elementos html) em objetos JS
-    /*const imgList = imgArray.map( ({src}) => ({
-        src
-    }))*/
-
-    // colocar para fora da função
-    return nodeList;
-
-  });
-
-  // escrever os dados em um arquivo local (json)
-  /*fs.writeFile('instagram.json', JSON.stringify(imgList, null, 2), err => {
-    if(err) throw new Error('something went wrong')
-
-    console.log('well done!')
-  })*/
-
-  console.log(tableArray.innerHTML)
-
-  await browser.close();
-})();
+client.send();
