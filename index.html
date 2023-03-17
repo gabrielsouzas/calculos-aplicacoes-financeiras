@@ -5,8 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculos Aplicações Financeiras</title>
+
+    <script defer src="script.js"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <header>
+        <a href="#" class="logo">Finn<span>Calc</span></a>
+        <!--<div class="bx bx-menu" id="menu-icon"></div>-->
+
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#poupanca">Poupança</a></li>
+            <li><a href="#tesouro-direto">Tesouro Direto</a></li>
+            <li><a href="#cdb">CDB</a></li>
+        </ul>
+    </header>
+    <main>
+        <section class="poupanca">
+            <h1>Poupança - Dados Banco Central do Brasil</h1>
+
+            <div class="form">
+                <label for="cmbSelFuncao">Escolha um tipo de função:</label>
+                <select name="cmbSelFuncao" onchange="selectChangeState()">
+                    <option value="valores_periodo">Valores Período</option>
+                    <option value="media_rendimento">Média Rendimento</option>
+                </select>
+
+                <label for="dataInicial">Data Inicial:</label>
+                <input type="date" name="dataInicial" id="data-inicial">
+
+                <label for="dataFinal">Data Final:</label>
+                <input type="date" name="dataInicial" id="data-final">
+
+                <button>Calcular</button>
+            </div>
+        </section>
+        
+    </main>
 </body>
 </html>

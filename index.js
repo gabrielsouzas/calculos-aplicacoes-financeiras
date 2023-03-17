@@ -1,4 +1,5 @@
 var soap = require('soap');
+const fs = require('fs');
 
 var url = 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl';
 soap.createClient(url, function (err, client) {
@@ -9,9 +10,19 @@ soap.createClient(url, function (err, client) {
   }, function (err, result) {
     if (err) return console.log(err);
     //console.log(result.getUltimoValorVOReturn.ultimoValor.svalor['$value']);getValorEspecial
-    console.log(result.getValoresSeriesVOReturn);
+    console.log(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores);
+    writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores )
   });
 });
+
+// escrever os dados em um arquivo local (json)
+function writeJsonFile(fileName, fileData){
+  fs.writeFile(`${fileName}.json`, JSON.stringify(fileData, null, 2), err => {
+    if(err) throw new Error('Erro: '+ err)
+
+    console.log(`${fileName} Dados salvos com sucesso!`)
+  })
+}
 
 //wsdl request
 /*var client = new XMLHttpRequest();

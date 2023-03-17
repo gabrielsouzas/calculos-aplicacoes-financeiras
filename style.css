@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+/* RESET */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+
+/* VARIAVEIS */
+:root {
+    --cor-fundo: #10101a;
+    --cor-fundo-claro: #1a1a29;
+    --cor-principal: #2fbf71; /* #2f91bf */
+    --2nd-cor-principal: #ffffffcc;
+    --cor-texto: #fff;
+    --fonte-grande: 5rem;
+    --h2-fonte: 1.9rem;
+    --p-fonte: 1rem;
+}
+
+/* BODY */
+body {
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+/* HEADER - NAVBAR */
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cor-fundo-claro);
+    padding: 24px 14%;
+    transition: .3s;
+}
+
+.logo {
+    color: var(--cor-texto);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+span {
+    color: var(--cor-principal);
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    color: var(--cor-texto);
+    font-size: 1rem;
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.navbar a:hover {
+    background: var(--cor-principal);
+    transition: .3s;
+}
+
+#menu-icon {
+    font-size: 28px;
+    z-index: 10001;
+    cursor: pointer;
+    display: none;
+}
+
+/* SECTION */
+section {
+    padding: 120px 14%;
+}
+
+/* POUPANCA */
+.poupanca {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.poupanca h1 {
+    text-align: center;
+}
+
+/* BOTOES */
+button {
+    background: var(--cor-principal);
+    color: var(--cor-texto);
+    box-shadow: 4px 4px var(--cor-texto);
+    padding: 0 25px;
+    line-height: 42px;
+    display: inline-block;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: ease all 0.35s;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--cor-texto);
+    color: var(--cor-principal);
+    box-shadow: 4px 4px var(--cor-principal);
+}
