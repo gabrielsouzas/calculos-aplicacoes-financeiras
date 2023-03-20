@@ -17,6 +17,7 @@
     --cor-fundo: #10101a;
     --cor-fundo-claro: #1a1a29;
     --cor-principal: #2fbf71; /* #2f91bf */
+    --cor-principal-clara: #abd8bf;
     --2nd-cor-principal: #ffffffcc;
     --cor-texto: #fff;
     --fonte-grande: 5rem;
@@ -93,6 +94,31 @@ section {
 
 .poupanca h1 {
     text-align: center;
+    color: var(--cor-principal-clara);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.form div {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 370px;
+}
+
+.form input, select {
+    width: 150px;
+    padding: 3px;
+}
+
+.form label {
+    padding-right: 8px;
 }
 
 /* BOTOES */
@@ -100,7 +126,8 @@ button {
     background: var(--cor-principal);
     color: var(--cor-texto);
     box-shadow: 4px 4px var(--cor-texto);
-    padding: 0 25px;
+    padding: 0 40px;
+    margin-top: 15px;
     line-height: 42px;
     display: inline-block;
     border: 1px solid transparent;

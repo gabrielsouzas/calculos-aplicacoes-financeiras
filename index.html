@@ -27,20 +27,28 @@
             <h1>Poupança - Dados Banco Central do Brasil</h1>
 
             <div class="form">
-                <label for="cmbSelFuncao">Escolha um tipo de função:</label>
-                <select name="cmbSelFuncao" onchange="selectChangeState()">
-                    <option value="valores_periodo">Valores Período</option>
-                    <option value="media_rendimento">Média Rendimento</option>
-                </select>
+                <div>
+                    <label for="cmbSelFuncao">Escolha um tipo de função:</label>
+                    <select name="cmbSelFuncao" onchange="selectChangeState()">
+                        <option value="valores_periodo">Valores Período</option>
+                        <option value="media_rendimento">Média Rendimento</option>
+                    </select>
+                </div>
 
-                <label for="dataInicial">Data Inicial:</label>
-                <input type="date" name="dataInicial" id="data-inicial">
+                <div>
+                    <label for="dataInicial">Data Inicial:</label>
+                    <input type="date" name="dataInicial" id="data-inicial">
+                </div>
 
-                <label for="dataFinal">Data Final:</label>
-                <input type="date" name="dataInicial" id="data-final">
+                <div>
+                    <label for="dataFinal">Data Final:</label>
+                    <input type="date" name="dataInicial" id="data-final">
+                </div>
 
-                <label for="valorInvest">Valor Investido:</label>
-                <input type="number" name="valorInvest" id="valor-invest">
+                <div>
+                    <label for="valorInvest">Valor Investido:</label>
+                    <input type="text" name="valorInvest" id="valor-invest" onKeyUp="mascaraMoeda(this, event)"  value="" placeholder="R$">
+                </div>
 
                 <button>Calcular</button>
             </div>
