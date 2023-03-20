@@ -1,16 +1,19 @@
 var soap = require('soap');
 const fs = require('fs');
 
+var data = new Date();
+data.setDate(data.getDate() - 60);
+
 var url = 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl';
 soap.createClient(url, function (err, client) {
   client.getValoresSeriesVO({ 
     in0: [195],
-    in1: "01/03/2023",
-    in2: "16/03/2023",
+    in1: data.toLocaleString().split(',')[0],
+    in2: new Date(Date.now()).toLocaleString().split(',')[0],
   }, function (err, result) {
     if (err) return console.log(err);
     //console.log(result.getUltimoValorVOReturn.ultimoValor.svalor['$value']);getValorEspecial
-    console.log(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores);
+    //console.log(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores);
     writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores )
   });
 });

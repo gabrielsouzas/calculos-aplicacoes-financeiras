@@ -121,6 +121,26 @@ section {
     padding-right: 8px;
 }
 
+/* TABELA */
+table {
+    border:1px solid var(--cor-principal);
+    border-collapse:collapse;
+    padding:5px;
+}
+table th {
+    border:1px solid var(--cor-fundo);
+    padding:5px;
+    background: var(--cor-principal);
+    color: #313030;
+}
+table td {
+    border:1px solid var(--cor-fundo);
+    text-align:center;
+    padding:5px;
+    background: var(--cor-fundo-claro);
+    color: var(--cor-texto);
+}
+
 /* BOTOES */
 button {
     background: var(--cor-principal);

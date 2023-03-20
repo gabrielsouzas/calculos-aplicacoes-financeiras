@@ -29,7 +29,7 @@
             <div class="form">
                 <div>
                     <label for="cmbSelFuncao">Escolha um tipo de função:</label>
-                    <select name="cmbSelFuncao" onchange="selectChangeState()">
+                    <select name="cmbSelFuncao" id="sel-funcao">
                         <option value="valores_periodo">Valores Período</option>
                         <option value="media_rendimento">Média Rendimento</option>
                     </select>
@@ -50,8 +50,25 @@
                     <input type="text" name="valorInvest" id="valor-invest" onKeyUp="mascaraMoeda(this, event)"  value="" placeholder="R$">
                 </div>
 
-                <button>Calcular</button>
+                <button id="btn-calcular">Calcular</button>
             </div>
+
+            <table>
+                <thead>
+                    <!--<tr>
+                        <th>Data Inicial</th>
+                        <th>Data Final</th>
+                        <th>Rendimento</th>
+                    </tr>-->
+                </thead>
+                <tbody>
+                    <!--<tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>-->
+                </tbody>
+            </table>
         </section>
         
     </main>

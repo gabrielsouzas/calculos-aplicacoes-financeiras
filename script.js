@@ -1,41 +1,125 @@
+/* Seta as datas inicial para 30 dias atrás e a final para a atual */
+const dataInicial = document.querySelector('#data-inicial')
+const dataFinal = document.querySelector('#data-final')
 
-const carregarDados = async (value, element = '', filter = '') => {
-    const response = await fetch(`./${value}.json`);
-    const data = await response.json();
-    //const dataArrayString = JSON.stringify(data)
-    
+const dataAtual = new Date(Date.now()).toLocaleString().split(',')[0];
+//const dataFormatada = dataAtual.split('/');
 
-    // formatar os dados para enviar para o html
-    //const htmlList = data.map( valores => `<li><span>${valores.svalor['$value']}</span></li>`).join('')
+var data = new Date();
+data.setDate(data.getDate() - 30);
+dataInicial.value = colocarDataInput(data.toLocaleString().split(',')[0]);
 
+dataFinal.value = colocarDataInput(dataAtual);
 
-    for (let i = 0; i < data.valores.length; i++) {
-        console.log(data.valores[i].svalor['$value'])
-    }
-
-    
-
-    /*
-    var html;
-    if (filter != '') {
-        html = data.map( dt => `<li><ul>${dt[`${filter}`]}</ul></li>`).join('') // .join('') - separador das strings
-    } else {
-        /*html = data.map( dt => `<div class="user">
-                                    <img src="${dt.avatar_url}">
-                                    <span class="login">${dt.login}</span>
-                                </div>`).join('')*//*
-        html = data.map( dt => {
-            let user = addElement('div', element, '', '', 'user');
-            addElement('img', user, '', dt.avatar_url, '');
-            addElement('span', user, dt.login, '', `login`);
-        })
-    }*/
-
-    // colocar no html
-    //element.innerHTML = html;
+function colocarDataInput(data) {
+    let dataArray = data.split('/');
+    return `${dataArray[2]}-${dataArray[1]}-${dataArray[0]}`
 }
 
-carregarDados('valoresVOReturn')
+/* Fim datas */
+
+const tableHead = document.querySelector('table thead');
+const tableBody = document.querySelector('table tbody');
+
+const carregarDadosValoresPeriodo = async (value, dtInicio, dtFim) => {
+    const response = await fetch(`./${value}.json`);
+    const data = await response.json();
+    
+    tableBody.innerHTML = '';
+    tableHead.innerHTML = `<tr>
+                             <th>Data Inicial</th>
+                             <th>Data Final</th>
+                             <th>Rendimento</th>
+                           </tr>`;
+
+    for (let i = 0; i < data.valores.length; i++) {
+        //console.log(data.valores[i].svalor['$value'])
+        let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
+
+        let dataRef = new Date(colocarDataInput(dataFormatada));
+        
+        if (dataRef <= dtFim && dataRef >= dtInicio) {
+            tableBody.innerHTML += `<tr>
+                                    <td>${dataFormatada}</td>
+                                    <td>${dataFormatada}</td>
+                                    <td>${data.valores[i].svalor['$value']}</td>
+                                </tr>`;
+        }
+
+        
+    }
+
+}
+
+const valorInvestido = document.querySelector('#valor-invest')
+
+const calcularRendimento = async (value, dtInicio, dtFim) => {
+    const response = await fetch(`./${value}.json`);
+    const data = await response.json();
+    
+    tableBody.innerHTML = '';
+    tableHead.innerHTML = `<tr>
+                             <th>Data</th>
+                             <th>Rendimento</th>
+                             <th>Média Rendimento</th>
+                             <th>Valor Investido</th>
+                             <th>Rendimento R$</th>
+                             <th>Média R$</th>
+                           </tr>`;
+
+    var rendimento = 0;
+    var cont = 1;
+
+    for (let i = 0; i < data.valores.length; i++) {
+        //console.log(data.valores[i].svalor['$value'])
+        let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
+
+        let dataRef = new Date(colocarDataInput(dataFormatada));
+
+        if (dataRef <= dtFim && dataRef >= dtInicio) {
+
+            rendimento += Number(data.valores[i].svalor['$value']);
+
+            let rendReal = Number(valorInvestido.value.replaceAll('.', '')) * (Number(data.valores[i].svalor['$value'])/100);
+
+            let rendRealMedia = Number(valorInvestido.value.replaceAll('.', '')) * ((rendimento/cont)/100);
+
+            tableBody.innerHTML += `<tr>
+                                    <td>${dataFormatada}</td>
+                                    <td>${data.valores[i].svalor['$value']}</td>
+                                    <td>${rendimento/cont}</td>
+                                    <td>${valorInvestido.value}</td>
+                                    <td>${rendReal}</td>
+                                    <td>${rendRealMedia}</td>
+                                </tr>`;
+
+            cont++;
+        }
+
+        
+    }
+
+}
+
+function putZero(data) {
+    if (data.length == 1) {
+        return `0${data}`;
+    }
+    return data;
+}
+
+const btnCalcular = document.querySelector('#btn-calcular');
+const selectFuncao = document.querySelector('#sel-funcao');
+
+btnCalcular.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    if (selectFuncao.value == 'valores_periodo') {
+        carregarDadosValoresPeriodo('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+    } else if (selectFuncao.value == 'media_rendimento') {
+        calcularRendimento('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+    }
+})
 
 // Mascara Moeda
 String.prototype.reverse = function () {
