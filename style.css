@@ -121,11 +121,17 @@ section {
     padding-right: 8px;
 }
 
+.t-invest input, .t-invest select {
+    width: 75px;
+}
+
 /* TABELA */
 table {
     border:1px solid var(--cor-principal);
     border-collapse:collapse;
-    padding:5px;
+    /*padding:5px;*/
+    
+    /*padding: 120px 14%;*/
 }
 table th {
     border:1px solid var(--cor-fundo);

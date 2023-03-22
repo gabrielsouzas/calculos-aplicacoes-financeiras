@@ -36,18 +36,28 @@
                 </div>
 
                 <div>
-                    <label for="dataInicial">Data Inicial:</label>
+                    <label for="dataInicial">Data Inicial Juros:</label>
                     <input type="date" name="dataInicial" id="data-inicial">
                 </div>
 
                 <div>
-                    <label for="dataFinal">Data Final:</label>
+                    <label for="dataFinal">Data Final Juros:</label>
                     <input type="date" name="dataInicial" id="data-final">
                 </div>
 
-                <div>
+                <div class="v-invest">
                     <label for="valorInvest">Valor Investido:</label>
-                    <input type="text" name="valorInvest" id="valor-invest" onKeyUp="mascaraMoeda(this, event)"  value="" placeholder="R$">
+                    <input type="text" name="valorInvest" id="valor-invest" onKeyUp="mascaraMoeda(this, event)"  value="" placeholder="R$ 0,00">
+                </div>
+
+                <div class="t-invest">
+                    <label for="tempoInvest">Tempo Investido:</label>
+                    <input type="number" name="tempoInvest" id="tempo-invest" value="" placeholder="opcional">
+                    <select name="cmbSelTempo" id="sel-tempo">
+                        <option value="dia">Dia(s)</option>
+                        <option value="mes">Mês/Meses</option>
+                        <option value="ano">Ano(s)</option>
+                    </select>
                 </div>
 
                 <button id="btn-calcular">Calcular</button>
