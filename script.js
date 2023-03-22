@@ -123,20 +123,7 @@ const calcularRendimentoPorTempo = async (value, dtInicio, dtFim) => {
         let dataRef = new Date(colocarDataInput(dataFormatada));
 
         if (dataRef <= dtFim && dataRef >= dtInicio) {
-
             rendimento += Number(data.valores[i].svalor['$value']);
-            //let rendReal = currencyToNumber(valorInvestido.value) * (Number(data.valores[i].svalor['$value'])/100);
-            //let rendRealMedia = currencyToNumber(valorInvestido.value) * ((rendimento/cont)/100);
-            /*
-            tableBody.innerHTML += `<tr>
-                                    <td>${dataFormatada}</td>
-                                    <td>${data.valores[i].svalor['$value']}</td>
-                                    <td>${(rendimento/cont).toFixed(4)}</td>
-                                    <td>${numberToCurrency(currencyToNumber(valorInvestido.value))}</td>
-                                    <td>${numberToCurrency(rendReal.toFixed(2))}</td>
-                                    <td>${numberToCurrency(rendRealMedia.toFixed(2))}</td>
-                                </tr>`;*/
-
             cont++;
         }
     }
@@ -149,8 +136,11 @@ const calcularRendimentoPorTempo = async (value, dtInicio, dtFim) => {
 
     var rendimentoTotal = investimentoTotal-currencyToNumber(valorInvestido.value);
 
+    let dataInicio = new Date().toLocaleString().split(',')[0];
+    let dataFim = addMesesData(dataInicio, tempoEmMeses*30);
+
     tableBody.innerHTML += `<tr>
-                                    <td>${new Date().toLocaleString().split(',')[0]}</td>
+                                    <td>${dataInicio}</td>
                                     <td>${tempoInvestValor.value + " " + tempoInvestQtde.options[tempoInvestQtde.options.selectedIndex].innerHTML}</td>
                                     <td>${dataFim}</td>
                                     <td>${mediaRendimento}</td>
@@ -166,6 +156,12 @@ function calcularInvestimento(valor, meses, juros) {
         valor += valor*(juros/100)
     }
     return valor;
+}
+
+function addMesesData(data, meses) {
+    data = new Date();
+    data.setDate(data.getDate() + meses);
+    return data.toLocaleString().split(',')[0];
 }
 
 function calcularTempoEmMeses(valor, medida) {
