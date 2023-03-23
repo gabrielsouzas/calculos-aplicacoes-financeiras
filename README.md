@@ -84,6 +84,8 @@ Os dados serão salvos em um arquivo no formato JSON, que será tratado pela int
 
 ## Considerações finais
 
+Este prjeto foi desenvolvido com o auxílio da página [Lidando com SOAP em Node.js](https://www.luiztools.com.br/post/lidando-com-soap-em-node-js/) escrita por [Luiz Duarte](https://www.luiztools.com.br/post/author/luiztools/)
+
 Em um futuro próximo tentarei deixar um servidor em Node.js rodando simultaneamente com a interface gráfica para buscar os dados do WS em tempo real.
 
 Qualquer sugestão ou dúvida fico à disposição aqui no GitHub.
@@ -91,7 +93,7 @@ Qualquer sugestão ou dúvida fico à disposição aqui no GitHub.
 <table>
   <tr>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/gabrielsouzas">
         <img src="https://avatars.githubusercontent.com/u/104937852?v=4" width="100px;" alt="Foto do Gabriel Souza da Silva no GitHub"/><br>
         <sub>
           <b>Gabriel Souza</b>
