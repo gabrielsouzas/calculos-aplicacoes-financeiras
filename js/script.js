@@ -22,7 +22,7 @@ const tableHead = document.querySelector('table thead');
 const tableBody = document.querySelector('table tbody');
 
 const carregarDadosValoresPeriodo = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./${value}.json`);
+    const response = await fetch(`./webservice/${value}.json`);
     const data = await response.json();
     
     tableBody.innerHTML = '';
@@ -54,7 +54,7 @@ const carregarDadosValoresPeriodo = async (value, dtInicio, dtFim) => {
 const valorInvestido = document.querySelector('#valor-invest')
 
 const calcularRendimento = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./${value}.json`);
+    const response = await fetch(`./webservice/${value}.json`);
     const data = await response.json();
     
     tableBody.innerHTML = '';
@@ -100,7 +100,7 @@ const tempoInvestValor = document.querySelector('#tempo-invest')
 const tempoInvestQtde = document.querySelector('#sel-tempo')
 
 const calcularRendimentoPorTempo = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./${value}.json`);
+    const response = await fetch(`./webservice/${value}.json`);
     const data = await response.json();
     
     tableBody.innerHTML = '';
