@@ -1,10 +1,11 @@
 # Calcular rendimentos de aplicações financeiras
 
-## Em desenvolvimento
+## 🚧 Em desenvolvimento 🚧
 
 </br>
 
 ## Consumo do WebService BCB
+>Informações da página [SGS - Sistema Gerenciador de Séries Temporais](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries)
 
 O SGS - Sistema Gerenciador de Séries Temporais disponibiliza serviços de consulta utilizando a tecnologia de WebServices. As definições (wsdl) dos serviços estão na seguinte URL: [FachadaWSSGS?wsdl](https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl)
 
@@ -62,3 +63,40 @@ Para consumir o webservice do SGS, é necessário importar a cadeia de certifica
 Para obter informações técnicas sobre o uso dos serviços, envie um e-mail para **dine5.deinf@bcb.gov.br**
 
 Informações sobre XML e XML Schema, acesse: <http://www.w3c.org>
+
+## Desenvolvendo o projeto
+
+Foi instalada a dependência do pacote Node SOAP:
+
+~~~node~~~
+npm i soap
+~~~
+
+No index.js foi criado um SOAP client usando o pacote node-soap, através da conexão da biblioteca com o endereço do WSDL do webservice.
+
+Para consumir o webservice basta executar o index.js com o node no terminal (atenção no caminho do terminal):
+
+~~~node~~~
+node index.js
+~~~
+
+Os dados serão salvos em um arquivo no formato JSON, que será tratado pela interface em HTML/CSS/JavaScript;
+
+## Considerações finais
+
+Em um futuro próximo tentarei deixar um servidor em Node.js rodando simultaneamente com a interface gráfica para buscar os dados do WS em tempo real.
+
+Qualquer sugestão ou dúvida fico à disposição aqui no GitHub.
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="#">
+        <img src="https://avatars.githubusercontent.com/u/104937852?v=4" width="100px;" alt="Foto do Gabriel Souza da Silva no GitHub"/><br>
+        <sub>
+          <b>Gabriel Souza</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
