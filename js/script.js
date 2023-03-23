@@ -218,6 +218,29 @@ btnCalcular.addEventListener('click', (event) => {
     }
 })
 
+/* TESTES SERVIDOR - EM ANDAMENTO
+btnCalcular.addEventListener('click',(event) => {
+    event.preventDefault();
+
+    testeRetorno('teste');
+})*/
+
+const testeRetorno = async (teste) => {
+    const response = await fetch('http://localhost:3333/teste',
+    {   method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teste }),
+    })
+
+    
+    //const teste = await response.json()
+    //return teste;
+
+    console.log(await response)
+
+}
+
 // Mascara Moeda
 String.prototype.reverse = function () {
     return this.split('').reverse().join('');
