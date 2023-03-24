@@ -1,3 +1,6 @@
+// Altera o método principal entre JSON pré carregado ou online
+var preJson = false;
+
 /* Seta as datas inicial para 30 dias atrás e a final para a atual */
 const dataInicial = document.querySelector('#data-inicial')
 const dataFinal = document.querySelector('#data-final')
@@ -195,6 +198,30 @@ const selectFuncao = document.querySelector('#sel-funcao');
 btnCalcular.addEventListener('click', (event) => {
     event.preventDefault();
 
+    if (preJson) {
+        eventoCliqueCalcularJsonCarregado();
+    } else {
+        eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+                                   dataFinal.valueAsDate.toLocaleString().split(',')[0]);
+        eventoCliqueCalcularJsonCarregado();
+    }
+})
+
+// TESTES SERVIDOR - EM ANDAMENTO
+
+const eventoCliqueCalcularOnline = async (dataInicial, dataFinal) => {
+    const response = await fetch(`http://localhost:3333/webservice/?datainicio=${dataInicial}&datafim=${dataFinal}`,
+    {   method: 'GET',
+        mode: 'no-cors',
+    })
+    
+    console.log(await response.status)
+
+
+}
+
+// Versão com o JSON do webservice pré-carregado
+function eventoCliqueCalcularJsonCarregado() {
     if (selectFuncao.value == 'valores_periodo') {
         carregarDadosValoresPeriodo('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
     } else if (selectFuncao.value == 'media_rendimento') {
@@ -216,29 +243,6 @@ btnCalcular.addEventListener('click', (event) => {
             alert("Para calcular o rendimento preencha o campo Valor Investido!")
         }
     }
-})
-
-/* TESTES SERVIDOR - EM ANDAMENTO
-btnCalcular.addEventListener('click',(event) => {
-    event.preventDefault();
-
-    testeRetorno('teste');
-})*/
-
-const testeRetorno = async (teste) => {
-    const response = await fetch('http://localhost:3333/teste',
-    {   method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teste }),
-    })
-
-    
-    //const teste = await response.json()
-    //return teste;
-
-    console.log(await response)
-
 }
 
 // Mascara Moeda
