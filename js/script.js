@@ -198,6 +198,22 @@ const selectFuncao = document.querySelector('#sel-funcao');
 
 const loader = document.querySelector('.loader');
 
+const containerValorInvestido = document.querySelector('.v-invest');
+const containerTempoInvestido = document.querySelector('.t-invest');
+
+containerValorInvestido.style.display = 'none';
+containerTempoInvestido.style.display = 'none';
+
+selectFuncao.addEventListener('change', () => {
+    if (selectFuncao.value == 'valores_periodo') {
+        containerValorInvestido.style.display = 'none';
+        containerTempoInvestido.style.display = 'none';
+    } else if (selectFuncao.value == 'media_rendimento') {
+        containerValorInvestido.style.display = 'flex';
+        containerTempoInvestido.style.display = 'flex';
+    }
+})
+
 btnCalcular.addEventListener('click', async (event) => {
     event.preventDefault();
 

@@ -121,8 +121,12 @@ section {
     padding-right: 8px;
 }
 
-.t-invest input, .t-invest select {
-    width: 75px;
+.t-invest input {
+    width: 77px;
+}
+
+.t-invest select {
+    width: 73px;
 }
 
 /* TABELA */
