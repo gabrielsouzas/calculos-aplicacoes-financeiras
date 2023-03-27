@@ -126,23 +126,27 @@ section {
 }
 
 /* TABELA */
+.tabela {
+    overflow: auto;
+    width: 100%;
+}
+
 table {
-    border:1px solid var(--cor-principal);
-    border-collapse:collapse;
-    /*padding:5px;*/
+    border: 1px solid var(--cor-principal);
+    border-collapse: collapse;
     
-    /*padding: 120px 14%;*/
+    width: 100%;
 }
 table th {
-    border:1px solid var(--cor-fundo);
-    padding:5px;
+    border: 1px solid var(--cor-fundo);
+    padding: 5px;
     background: var(--cor-principal);
     color: #313030;
 }
 table td {
-    border:1px solid var(--cor-fundo);
-    text-align:center;
-    padding:5px;
+    border: 1px solid var(--cor-fundo);
+    text-align: center;
+    padding: 5px;
     background: var(--cor-fundo-claro);
     color: var(--cor-texto);
 }
@@ -169,3 +173,21 @@ button:hover {
     color: var(--cor-principal);
     box-shadow: 4px 4px var(--cor-principal);
 }
+
+/* Loader */
+
+.loader {
+    display: none;
+    border: 8px solid #f3f3f317; /* Light grey */
+    border-top: 8px solid #34db7f; /* Blue */
+    border-radius: 70%;
+    width: 45px;
+    height: 45px;
+    align-self: center;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

@@ -55,7 +55,7 @@
                     <input type="number" name="tempoInvest" id="tempo-invest" value="" placeholder="opcional">
                     <select name="cmbSelTempo" id="sel-tempo">
                         <option value="dia">Dia(s)</option>
-                        <option value="mes">Mês/Meses</option>
+                        <option value="mes" selected >Mês/Meses</option>
                         <option value="ano">Ano(s)</option>
                     </select>
                 </div>
@@ -63,22 +63,19 @@
                 <button id="btn-calcular">Calcular</button>
             </div>
 
-            <table>
-                <thead>
-                    <!--<tr>
-                        <th>Data Inicial</th>
-                        <th>Data Final</th>
-                        <th>Rendimento</th>
-                    </tr>-->
-                </thead>
-                <tbody>
-                    <!--<tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>-->
-                </tbody>
-            </table>
+            <div class="loader"></div>
+
+            <div class="tabela">
+                <table>
+                    <thead>
+                
+                    </thead>
+                    <tbody>
+                
+                    </tbody>
+                </table>
+            </div>
+
         </section>
         
     </main>

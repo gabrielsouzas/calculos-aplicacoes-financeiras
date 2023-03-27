@@ -21,6 +21,7 @@ function colocarDataInput(data) {
 
 /* Fim datas */
 
+const containerTabela = document.querySelector('.tabela');
 const tableHead = document.querySelector('table thead');
 const tableBody = document.querySelector('table tbody');
 
@@ -195,16 +196,28 @@ function putZero(data) {
 const btnCalcular = document.querySelector('#btn-calcular');
 const selectFuncao = document.querySelector('#sel-funcao');
 
+const loader = document.querySelector('.loader');
+
 btnCalcular.addEventListener('click', async (event) => {
     event.preventDefault();
 
+    containerTabela.style.display = 'none';
+    loader.style.display = 'block';
+
+    await eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+                                   dataFinal.valueAsDate.toLocaleString().split(',')[0]);
+
+    loader.style.display = 'none';
+    containerTabela.style.display = 'block';
+    
+    /* Para o JSON pré carregado
     if (preJson) {
         eventoCliqueCalcularJsonCarregado();
     } else {
         await eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
                                    dataFinal.valueAsDate.toLocaleString().split(',')[0]);
         //eventoCliqueCalcularJsonCarregado();
-    }
+    }*/
 })
 
 // TESTES SERVIDOR - EM ANDAMENTO
