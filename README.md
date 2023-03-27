@@ -66,27 +66,48 @@ Informações sobre XML e XML Schema, acesse: <http://www.w3c.org>
 
 ## Desenvolvendo o projeto
 
-Foi instalada a dependência do pacote Node SOAP:
+Dependências do projeto (package.json):
+
+~~~json~~~
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "puppeteer": "^19.7.5",
+    "soap": "^1.0.0"
+  }
+}
+~~~
+
+Instale todas as dependências com o npm.
+
+Exemplo da instalação da soap, que é responsável pelo consumo do WebService:
 
 ~~~node~~~
 npm i soap
 ~~~
 
-No index.js foi criado um SOAP client usando o pacote node-soap, através da conexão da biblioteca com o endereço do WSDL do webservice.
+O server.js é o servidor que fará o consumo do webservice através de um SOAP client, através da conexão da biblioteca com o endereço do WSDL do webservice.
 
-Para consumir o webservice basta executar o index.js com o node no terminal (atenção no caminho do terminal):
+Para iniciar o servidor na porta 3333 basta executar o server.js com o node no terminal (atenção no caminho do terminal):
 
 ~~~node~~~
-node index.js
+node server.js
 ~~~
 
-Os dados serão salvos em um arquivo no formato JSON, que será tratado pela interface em HTML/CSS/JavaScript;
+O servidor fará a requisição sempre que o usuário solicitar o get na URL:
+
+~~~node~~~
+http://localhost:3333/webservice/?datainicio=${dataInicial}&datafim=${dataFinal}
+~~~
+
 
 ## Considerações finais
 
 Este prjeto foi desenvolvido com o auxílio da página [Lidando com SOAP em Node.js](https://www.luiztools.com.br/post/lidando-com-soap-em-node-js/) escrita por [Luiz Duarte](https://www.luiztools.com.br/post/author/luiztools/)
 
-Em um futuro próximo tentarei deixar um servidor em Node.js rodando simultaneamente com a interface gráfica para buscar os dados do WS em tempo real.
+Pelo código podem ser vistos alguns comentarios da criação de um arquivo JSON (valoresVOReturn), esse arquivo era usado para guardar os dados retornados do WebService, vou manter esses comentários caso alguém precise deste tipo de tratamento de dados.
 
 Qualquer sugestão ou dúvida fico à disposição aqui no GitHub.
 

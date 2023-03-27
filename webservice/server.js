@@ -5,30 +5,6 @@ const fs = require('fs');
 
 app.listen(port);
 
-//app.get('/teste', function(req, res) { res.json({hello : 'world'});})
-
-/*app.post('/teste', function(request, response) { 
-    var data = new Date();
-    data.setDate(data.getDate() - 60);
-
-    //const teste = req.params;
-
-    console.log(request.body)
-
-    /*var url = 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl';
-    soap.createClient(url, function (err, client) {
-        client.getValoresSeriesVO({
-            in0: [195],
-            in1: data.toLocaleString().split(',')[0],
-            in2: new Date(Date.now()).toLocaleString().split(',')[0],
-        }, function (err, result) {
-            if (err) return console.log(err);
-            writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            //res.json(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-        });
-    });*//*
-})*/
-
 app.get("/webservice", (req, res) => {
     const data_inicio = req.query.datainicio;
     const data_fim = req.query.datafim;
@@ -52,11 +28,9 @@ app.get("/webservice", (req, res) => {
             // Removido o recarregamento de pagina do live server para executar esse comando
             //writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
             res.json(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            //res.status = 200;
+            
         });
     });
-
-    //return res//.json({ "status": "erro" });
 });
 
 // escrever os dados em um arquivo local (json)
