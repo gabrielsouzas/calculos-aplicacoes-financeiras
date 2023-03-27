@@ -33,6 +33,11 @@ app.get("/webservice", (req, res) => {
     const data_inicio = req.query.datainicio;
     const data_fim = req.query.datafim;
 
+    res.set({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    });
+
     var url = 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl';
     
     soap.createClient(url, function (err, client) {
@@ -42,17 +47,16 @@ app.get("/webservice", (req, res) => {
             in2: data_fim,
         }, function (err, result) {
             if (err) {
-                res.status = 404;
                 return console.log(err)
             };
             // Removido o recarregamento de pagina do live server para executar esse comando
-            writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            //return res.json(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            res.status = 200;
+            //writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
+            res.json(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
+            //res.status = 200;
         });
     });
 
-    return res.json({ status: "nois" });
+    //return res//.json({ "status": "erro" });
 });
 
 // escrever os dados em um arquivo local (json)

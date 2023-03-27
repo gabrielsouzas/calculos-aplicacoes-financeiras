@@ -24,9 +24,9 @@ function colocarDataInput(data) {
 const tableHead = document.querySelector('table thead');
 const tableBody = document.querySelector('table tbody');
 
-const carregarDadosValoresPeriodo = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./webservice/${value}.json`);
-    const data = await response.json();
+const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
+    //const response = await fetch(`./webservice/${value}.json`);
+    //const data = await response.json();
     
     tableBody.innerHTML = '';
     tableHead.innerHTML = `<tr>
@@ -56,9 +56,9 @@ const carregarDadosValoresPeriodo = async (value, dtInicio, dtFim) => {
 
 const valorInvestido = document.querySelector('#valor-invest')
 
-const calcularRendimento = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./webservice/${value}.json`);
-    const data = await response.json();
+const calcularRendimento = async (data, dtInicio, dtFim) => {
+    //const response = await fetch(`./webservice/${value}.json`);
+    //const data = await response.json();
     
     tableBody.innerHTML = '';
     tableHead.innerHTML = `<tr>
@@ -102,9 +102,9 @@ const calcularRendimento = async (value, dtInicio, dtFim) => {
 const tempoInvestValor = document.querySelector('#tempo-invest')
 const tempoInvestQtde = document.querySelector('#sel-tempo')
 
-const calcularRendimentoPorTempo = async (value, dtInicio, dtFim) => {
-    const response = await fetch(`./webservice/${value}.json`);
-    const data = await response.json();
+const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
+    //const response = await fetch(`./webservice/${value}.json`);
+    //const data = await response.json();
     
     tableBody.innerHTML = '';
     tableHead.innerHTML = `<tr>
@@ -195,15 +195,15 @@ function putZero(data) {
 const btnCalcular = document.querySelector('#btn-calcular');
 const selectFuncao = document.querySelector('#sel-funcao');
 
-btnCalcular.addEventListener('click', (event) => {
+btnCalcular.addEventListener('click', async (event) => {
     event.preventDefault();
 
     if (preJson) {
         eventoCliqueCalcularJsonCarregado();
     } else {
-        eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+        await eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
                                    dataFinal.valueAsDate.toLocaleString().split(',')[0]);
-        eventoCliqueCalcularJsonCarregado();
+        //eventoCliqueCalcularJsonCarregado();
     }
 })
 
@@ -212,18 +212,25 @@ btnCalcular.addEventListener('click', (event) => {
 const eventoCliqueCalcularOnline = async (dataInicial, dataFinal) => {
     const response = await fetch(`http://localhost:3333/webservice/?datainicio=${dataInicial}&datafim=${dataFinal}`,
     {   method: 'GET',
-        mode: 'no-cors',
+        //mode: 'no-cors',
     })
     
-    console.log(await response.status)
+    const dados = await response.json();
+
+    eventoCliqueCalcularJsonCarregado(dados);
 
 
 }
 
+// Verifica se um objeto está vazio
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
 // Versão com o JSON do webservice pré-carregado
-function eventoCliqueCalcularJsonCarregado() {
+function eventoCliqueCalcularJsonCarregado(dadosJson) {
     if (selectFuncao.value == 'valores_periodo') {
-        carregarDadosValoresPeriodo('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+        carregarDadosValoresPeriodo(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
     } else if (selectFuncao.value == 'media_rendimento') {
         if (valorInvestido.value.length > 0) {
             if (tempoInvestValor.value.length > 0) {
@@ -231,13 +238,13 @@ function eventoCliqueCalcularJsonCarregado() {
                     if (tempoInvestValor.value < 30) {
                         alert("É necessário um tempo de 30 dias ou mais para ter um cálculo de rendimento!")
                     } else {
-                        calcularRendimentoPorTempo('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+                        calcularRendimentoPorTempo(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
                     }
                 } else {
-                    calcularRendimentoPorTempo('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+                    calcularRendimentoPorTempo(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
                 }
             } else {
-                calcularRendimento('valoresVOReturn', new Date(dataInicial.value), new Date(dataFinal.value));
+                calcularRendimento(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
             }
         } else {
             alert("Para calcular o rendimento preencha o campo Valor Investido!")
