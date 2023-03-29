@@ -313,7 +313,13 @@ const tituloPoupanca = 'Poupança - Dados Banco Central do Brasil';
 const tituloCDB = 'CDB - Dados Banco Central do Brasil';
 const tituloTesouroDireto = 'Tesouro Direto - Dados Banco Central do Brasil';
 
-const codigoSerie = 195;
+var codigoSerie = 195;
+
+// Imposto de Renda CDB
+const IR180 = 22.5; // Aplicações de até 180 dias: 22,5%; 
+const IR360 = 20;   // Aplicações entre 181 e 360 dias: 20%; 
+const IR720 = 17.5; // Aplicações entre 361 e 720 dias: 17,5%; 
+const IR999 = 15;   // Aplicações maiores do que 720 dias: 15%. 
 
 for (let i = 0; i < navbarButtons.length; i++) {
     navbarButtons[i].addEventListener('click', ({target}) => {
