@@ -177,6 +177,16 @@ function calcularTempoEmMeses(valor, medida) {
     }
 }
 
+function calcularTempoEmDias(valor, medida) {
+    if (medida == 'mes') {
+        return Number((valor*30));
+    } else if (medida == 'ano') {
+        return valor*365;
+    } else {
+        return Number(valor);
+    }
+}
+
 function numberToCurrency(value) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 }
@@ -320,6 +330,22 @@ const IR180 = 22.5; // Aplicações de até 180 dias: 22,5%;
 const IR360 = 20;   // Aplicações entre 181 e 360 dias: 20%; 
 const IR720 = 17.5; // Aplicações entre 361 e 720 dias: 17,5%; 
 const IR999 = 15;   // Aplicações maiores do que 720 dias: 15%. 
+
+function calcularRendimentoAposIRCDB(diasInvestidos, rendimento) {
+    if (diasInvestidos <= 180) {
+        return rendimento - ((rendimento*IR180)/100);
+    } else if (diasInvestidos > 180 && diasInvestidos <= 360) {
+        return rendimento - ((rendimento*IR360)/100);
+    } else if (diasInvestidos > 360  && diasInvestidos <= 720) {
+        return rendimento - ((rendimento*IR720)/100);
+    } else {
+        return rendimento - ((rendimento*IR999)/100);
+    }
+}
+
+function calcularPctRendimentoAposIRCDB(rendimentoAposDescIR, investimentoTotal) {
+    return (rendimentoAposDescIR*100)/investimentoTotal;
+}
 
 for (let i = 0; i < navbarButtons.length; i++) {
     navbarButtons[i].addEventListener('click', ({target}) => {
