@@ -66,6 +66,7 @@ span {
     padding: 10px 20px;
     font-weight: 500;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .navbar a:hover {
@@ -85,14 +86,14 @@ section {
     padding: 120px 14%;
 }
 
-/* POUPANCA */
-.poupanca {
+/* principal */
+.principal {
     display: flex;
     flex-direction: column;
     gap: 50px;
 }
 
-.poupanca h1 {
+.principal h1 {
     text-align: center;
     color: var(--cor-principal-clara);
 }

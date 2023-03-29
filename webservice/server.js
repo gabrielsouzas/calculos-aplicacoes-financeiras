@@ -6,6 +6,7 @@ const fs = require('fs');
 app.listen(port);
 
 app.get("/webservice", (req, res) => {
+    const serie = req.query.serie;
     const data_inicio = req.query.datainicio;
     const data_fim = req.query.datafim;
 
@@ -18,7 +19,7 @@ app.get("/webservice", (req, res) => {
     
     soap.createClient(url, function (err, client) {
         client.getValoresSeriesVO({
-            in0: [195],
+            in0: [serie],
             in1: data_inicio,
             in2: data_fim,
         }, function (err, result) {

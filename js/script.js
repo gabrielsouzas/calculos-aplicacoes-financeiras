@@ -1,5 +1,7 @@
 // Altera o método principal entre JSON pré carregado ou online
-var preJson = false;
+//var preJson = false;
+
+// Datas inputs
 
 /* Seta as datas inicial para 30 dias atrás e a final para a atual */
 const dataInicial = document.querySelector('#data-inicial')
@@ -19,15 +21,15 @@ function colocarDataInput(data) {
     return `${dataArray[2]}-${dataArray[1]}-${dataArray[0]}`
 }
 
-/* Fim datas */
+// Fim datas
+
+// Carregamento dos dados na tabela
 
 const containerTabela = document.querySelector('.tabela');
 const tableHead = document.querySelector('table thead');
 const tableBody = document.querySelector('table tbody');
 
 const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
-    //const response = await fetch(`./webservice/${value}.json`);
-    //const data = await response.json();
     
     tableBody.innerHTML = '';
     tableHead.innerHTML = `<tr>
@@ -37,7 +39,6 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
                            </tr>`;
 
     for (let i = 0; i < data.valores.length; i++) {
-        //console.log(data.valores[i].svalor['$value'])
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
 
         let dataRef = new Date(colocarDataInput(dataFormatada));
@@ -49,10 +50,7 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
                                     <td>${data.valores[i].svalor['$value']}</td>
                                 </tr>`;
         }
-
-        
     }
-
 }
 
 const valorInvestido = document.querySelector('#valor-invest')
@@ -74,7 +72,6 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
     var rendimento = 0;
     var cont = 1;
     
-
     for (let i = 0; i < data.valores.length; i++) {
         
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
@@ -155,6 +152,8 @@ const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
 
 }
 
+// Métodos formatadores de conteúdo
+
 function calcularInvestimento(valor, meses, juros) {
     for (let i = 1; i <= meses; i++) {
         valor += valor*(juros/100)
@@ -193,6 +192,8 @@ function putZero(data) {
     return data;
 }
 
+// Eventos troca de função e calculos
+
 const btnCalcular = document.querySelector('#btn-calcular');
 const selectFuncao = document.querySelector('#sel-funcao');
 
@@ -220,7 +221,7 @@ btnCalcular.addEventListener('click', async (event) => {
     containerTabela.style.display = 'none';
     loader.style.display = 'block';
 
-    await eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+    await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
                                    dataFinal.valueAsDate.toLocaleString().split(',')[0]);
 
     loader.style.display = 'none';
@@ -228,26 +229,25 @@ btnCalcular.addEventListener('click', async (event) => {
     
     /* Para o JSON pré carregado
     if (preJson) {
-        eventoCliqueCalcularJsonCarregado();
+        eventoCliqueBotaoCalcular();
     } else {
-        await eventoCliqueCalcularOnline(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+        await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
                                    dataFinal.valueAsDate.toLocaleString().split(',')[0]);
-        //eventoCliqueCalcularJsonCarregado();
+        //eventoCliqueBotaoCalcular();
     }*/
 })
 
-// TESTES SERVIDOR - EM ANDAMENTO
+// Requisição ao servidor dos dados do webservice
 
-const eventoCliqueCalcularOnline = async (dataInicial, dataFinal) => {
-    const response = await fetch(`http://localhost:3333/webservice/?datainicio=${dataInicial}&datafim=${dataFinal}`,
+const buscarDadosServidor = async (dataInicial, dataFinal) => {
+    const response = await fetch(`http://localhost:3333/webservice/?serie=${codigoSerie}&datainicio=${dataInicial}&datafim=${dataFinal}`,
     {   method: 'GET',
         //mode: 'no-cors',
     })
     
     const dados = await response.json();
 
-    eventoCliqueCalcularJsonCarregado(dados);
-
+    eventoCliqueBotaoCalcular(dados);
 
 }
 
@@ -256,8 +256,7 @@ function isEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
 
-// Versão com o JSON do webservice pré-carregado
-function eventoCliqueCalcularJsonCarregado(dadosJson) {
+function eventoCliqueBotaoCalcular(dadosJson) {
     if (selectFuncao.value == 'valores_periodo') {
         carregarDadosValoresPeriodo(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
     } else if (selectFuncao.value == 'media_rendimento') {
@@ -302,4 +301,44 @@ function mascaraMoeda(campo, evento) {
         }
     }
     campo.value = resultado.reverse();
+}
+
+// Evento clique navbar para escolha do calculo
+
+const navbarButtons = document.querySelectorAll('.navbar a');
+const tituloSecao = document.querySelector('.principal h1')
+
+const tituloHome = 'Bem vindo a calculadora finaceira!'; // com dados em tempo real do Banco Central do Brasil
+const tituloPoupanca = 'Poupança - Dados Banco Central do Brasil';
+const tituloCDB = 'CDB - Dados Banco Central do Brasil';
+const tituloTesouroDireto = 'Tesouro Direto - Dados Banco Central do Brasil';
+
+const codigoSerie = 195;
+
+for (let i = 0; i < navbarButtons.length; i++) {
+    navbarButtons[i].addEventListener('click', ({target}) => {
+        trocarCalculoFinanceiro(target.id);
+    })
+}
+
+function trocarCalculoFinanceiro(id) {
+    switch (id) {
+        case 'home':
+            tituloSecao.innerHTML = tituloHome;
+            break;
+        case 'poupanca':
+            tituloSecao.innerHTML = tituloPoupanca;
+            codigoSerie = 195;
+            break;
+        case 'cdb':
+            tituloSecao.innerHTML = tituloCDB;
+            codigoSerie = 4391;
+            break;
+        case 'tesouro-direto':
+            tituloSecao.innerHTML = tituloTesouroDireto;
+            break;
+    
+        default:
+            break;
+    }
 }
