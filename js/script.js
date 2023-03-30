@@ -29,27 +29,69 @@ const containerTabela = document.querySelector('.tabela');
 const tableHead = document.querySelector('table thead');
 const tableBody = document.querySelector('table tbody');
 
+var idReg = 'poupanca';
+
 const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
-    
+        
     tableBody.innerHTML = '';
-    tableHead.innerHTML = `<tr>
+    
+    if (idReg == 'poupanca') {
+        tableHead.innerHTML = `<tr>
                              <th>Data Inicial</th>
                              <th>Data Final</th>
                              <th>Rendimento</th>
                            </tr>`;
+    } else if (idReg == 'cdb') {
+        tableHead.innerHTML = `<tr>
+                             <th>Data Consolidação</th>
+                             <th>Rendimento</th>
+                             <th>IR 180 dias</th>
+                             <th>IR 360 dias</th>
+                             <th>IR 720 dias</th>
+                             <th>IR mais de 720 dias</th>
+                           </tr>`;
+    }
 
     for (let i = 0; i < data.valores.length; i++) {
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
 
+        let dataCDB = colocarDataInput(dataFormatada);
+
         let dataRef = new Date(colocarDataInput(dataFormatada));
+
+        let pctRendimento = data.valores[i].svalor['$value'];
+
+        /*
+        console.log(dtInicio.toLocaleString().split(',')[0])
+        console.log(dataCDB)
+        let dias = subtrairDatas(dtInicio, dataCDB);
+        console.log(dias)
+        let rendimentoAposIRCDB = calcularRendimentoAposIRCDB(dias, (Number(pctRendimento)/100)*100);
+        let pctAposIRCDB = calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(dias, 
+                                                                (Number(pctRendimento)/100)*100), 100);*/
         
-        if (dataRef <= dtFim && dataRef >= dtInicio) {
-            tableBody.innerHTML += `<tr>
+        //if (dataRef <= dtFim && dataRef >= dtInicio) {
+            if (idReg == 'poupanca') {
+                tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
                                     <td>${dataFormatada}</td>
                                     <td>${data.valores[i].svalor['$value']}</td>
                                 </tr>`;
-        }
+            } else if (idReg =='cdb') {
+                tableBody.innerHTML += `<tr>
+                                    <td>${dataFormatada}</td>
+                                    <td>${data.valores[i].svalor['$value']}</td>
+                                    <td>${calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(180, 
+                                        (Number(pctRendimento)/100)*100), 100)}</td>
+                                    <td>${calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(360, 
+                                        (Number(pctRendimento)/100)*100), 100)}</td>
+                                    <td>${calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(720, 
+                                        (Number(pctRendimento)/100)*100), 100)}</td>
+                                    <td>${calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(721, 
+                                        (Number(pctRendimento)/100)*100), 100)}</td>
+                                </tr>`;
+            }
+        //}
     }
 }
 
@@ -185,6 +227,13 @@ function calcularTempoEmDias(valor, medida) {
     } else {
         return Number(valor);
     }
+}
+
+// Tira a diferença entre duas datas em dias
+function subtrairDatas(data_inicial, data_final) {
+    const diffInMs   = new Date(data_final) - new Date(data_inicial)
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    return diffInDays;
 }
 
 function numberToCurrency(value) {
@@ -350,6 +399,7 @@ function calcularPctRendimentoAposIRCDB(rendimentoAposDescIR, investimentoTotal)
 for (let i = 0; i < navbarButtons.length; i++) {
     navbarButtons[i].addEventListener('click', ({target}) => {
         trocarCalculoFinanceiro(target.id);
+        idReg = target.id;
     })
 }
 
