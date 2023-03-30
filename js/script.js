@@ -55,13 +55,12 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
     for (let i = 0; i < data.valores.length; i++) {
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
 
-        let dataCDB = colocarDataInput(dataFormatada);
-
         let dataRef = new Date(colocarDataInput(dataFormatada));
-
+        
         let pctRendimento = data.valores[i].svalor['$value'];
-
+        
         /*
+        let dataCDB = colocarDataInput(dataFormatada);
         console.log(dtInicio.toLocaleString().split(',')[0])
         console.log(dataCDB)
         let dias = subtrairDatas(dtInicio, dataCDB);
@@ -70,7 +69,7 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
         let pctAposIRCDB = calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(dias, 
                                                                 (Number(pctRendimento)/100)*100), 100);*/
         
-        //if (dataRef <= dtFim && dataRef >= dtInicio) {
+        if (dataRef <= dtFim && dataRef >= dtInicio) {
             if (idReg == 'poupanca') {
                 tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
@@ -91,7 +90,7 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
                                         (Number(pctRendimento)/100)*100), 100)}</td>
                                 </tr>`;
             }
-        //}
+        }
     }
 }
 
@@ -118,7 +117,7 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
         
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
         let dataRef = new Date(colocarDataInput(dataFormatada));
-
+        
         if (dataRef <= dtFim && dataRef >= dtInicio) {
 
             rendimento += Number(data.valores[i].svalor['$value']);
@@ -393,7 +392,7 @@ function calcularRendimentoAposIRCDB(diasInvestidos, rendimento) {
 }
 
 function calcularPctRendimentoAposIRCDB(rendimentoAposDescIR, investimentoTotal) {
-    return (rendimentoAposDescIR*100)/investimentoTotal;
+    return ((rendimentoAposDescIR*100)/investimentoTotal).toFixed(2);
 }
 
 for (let i = 0; i < navbarButtons.length; i++) {
