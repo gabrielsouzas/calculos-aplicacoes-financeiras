@@ -293,8 +293,11 @@ const loader = document.querySelector('.loader');
 const containerValorInvestido = document.querySelector('.v-invest');
 const containerTempoInvestido = document.querySelector('.t-invest');
 
+const containerPorcentCDI = document.querySelector('.porcent-cdi');
+
 containerValorInvestido.style.display = 'none';
 containerTempoInvestido.style.display = 'none';
+containerPorcentCDI.style.display = 'none';
 
 selectFuncao.addEventListener('change', () => {
     if (selectFuncao.value == 'valores_periodo') {
@@ -439,20 +442,32 @@ function trocarCalculoFinanceiro(id) {
     switch (id) {
         case 'home':
             tituloSecao.innerHTML = tituloHome;
+            displayCDBFields(false);
             break;
         case 'poupanca':
             tituloSecao.innerHTML = tituloPoupanca;
             codigoSerie = 195;
+            displayCDBFields(false);
             break;
         case 'cdb':
             tituloSecao.innerHTML = tituloCDB;
             codigoSerie = 4391;
+            displayCDBFields(true);
             break;
         case 'tesouro-direto':
             tituloSecao.innerHTML = tituloTesouroDireto;
+            displayCDBFields(false);
             break;
     
         default:
             break;
+    }
+}
+
+function displayCDBFields(value) {
+    if (value) {
+        containerPorcentCDI.style.display = 'flex';
+    } else {
+        containerPorcentCDI.style.display = 'none';
     }
 }
