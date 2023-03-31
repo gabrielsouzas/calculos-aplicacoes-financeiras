@@ -23,6 +23,9 @@ function colocarDataInput(data) {
 
 // Fim datas
 
+// Porcentagem CDI
+const inputPctCDI = document.querySelector('#pct-cdi')
+
 // Carregamento dos dados na tabela
 
 const containerTabela = document.querySelector('.tabela');
@@ -32,7 +35,7 @@ const tableBody = document.querySelector('table tbody');
 var idReg = 'poupanca';
 
 const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
-        
+    
     tableBody.innerHTML = '';
     
     if (idReg == 'poupanca') {
@@ -58,16 +61,6 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
         let dataRef = new Date(colocarDataInput(dataFormatada));
         
         let pctRendimento = data.valores[i].svalor['$value'];
-        
-        /*
-        let dataCDB = colocarDataInput(dataFormatada);
-        console.log(dtInicio.toLocaleString().split(',')[0])
-        console.log(dataCDB)
-        let dias = subtrairDatas(dtInicio, dataCDB);
-        console.log(dias)
-        let rendimentoAposIRCDB = calcularRendimentoAposIRCDB(dias, (Number(pctRendimento)/100)*100);
-        let pctAposIRCDB = calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(dias, 
-                                                                (Number(pctRendimento)/100)*100), 100);*/
         
         if (dataRef <= dtFim && dataRef >= dtInicio) {
             if (idReg == 'poupanca') {
@@ -312,14 +305,16 @@ selectFuncao.addEventListener('change', () => {
 btnCalcular.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    containerTabela.style.display = 'none';
-    loader.style.display = 'block';
+    if (validarInputs()) {
+        containerTabela.style.display = 'none';
+        loader.style.display = 'block';
 
-    await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
-                                   dataFinal.valueAsDate.toLocaleString().split(',')[0]);
+        await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+                                    dataFinal.valueAsDate.toLocaleString().split(',')[0]);
 
-    loader.style.display = 'none';
-    containerTabela.style.display = 'block';
+        loader.style.display = 'none';
+        containerTabela.style.display = 'block';
+    }
     
     /* Para o JSON pré carregado
     if (preJson) {
@@ -416,7 +411,18 @@ const IR720 = 17.5; // Aplicações entre 361 e 720 dias: 17,5%;
 const IR999 = 15;   // Aplicações maiores do que 720 dias: 15%. 
 
 function calcularRendimentoAposIRCDB(diasInvestidos, rendimento) {
+    let IR = 0;
     if (diasInvestidos <= 180) {
+        IR = IR180;
+    } else if (diasInvestidos > 180 && diasInvestidos <= 360) {
+        IR = IR360;
+    } else if (diasInvestidos > 360  && diasInvestidos <= 720) {
+        IR = IR720;
+    } else {
+        IR = IR999;
+    }
+    return rendimento - ((rendimento*IR)/100);
+    /*if (diasInvestidos <= 180) {
         return rendimento - ((rendimento*IR180)/100);
     } else if (diasInvestidos > 180 && diasInvestidos <= 360) {
         return rendimento - ((rendimento*IR360)/100);
@@ -424,11 +430,11 @@ function calcularRendimentoAposIRCDB(diasInvestidos, rendimento) {
         return rendimento - ((rendimento*IR720)/100);
     } else {
         return rendimento - ((rendimento*IR999)/100);
-    }
+    }*/
 }
 
 function calcularPctRendimentoAposIRCDB(rendimentoAposDescIR, investimentoTotal) {
-    return ((rendimentoAposDescIR*100)/investimentoTotal).toFixed(2);
+    return ((((rendimentoAposDescIR*100)/investimentoTotal)*inputPctCDI.value)/100).toFixed(2);
 }
 
 for (let i = 0; i < navbarButtons.length; i++) {
@@ -470,4 +476,14 @@ function displayCDBFields(value) {
     } else {
         containerPorcentCDI.style.display = 'none';
     }
+}
+
+function validarInputs() {
+    if (idReg == 'cdb') {
+        if (inputPctCDI.value <= 0) {
+            alert('A porcentagem do CDI deve ser informada e estar acima de 0!')
+            return false;
+        }
+    }
+    return true;
 }
