@@ -101,7 +101,8 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
     //const data = await response.json();
     
     tableBody.innerHTML = '';
-    tableHead.innerHTML = `<tr>
+    if (idReg == 'poupanca') {
+        tableHead.innerHTML = `<tr>
                              <th>Data</th>
                              <th>Rendimento</th>
                              <th>Média Rendimento</th>
@@ -109,6 +110,17 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
                              <th>Rendimento R$</th>
                              <th>Média R$</th>
                            </tr>`;
+    } else if (idReg == 'cdb'){
+        tableHead.innerHTML = `<tr>
+                             <th>Data Consolidação</th>
+                             <th>Rendimento</th>
+                             <th>Valor Investido</th>
+                             <th>IR 180 dias (a. m.)</th>
+                             <th>IR 360 dias (a. m.)</th>
+                             <th>IR 720 dias (a. m.)</th>
+                             <th>IR mais de 720 dias (a. m.)</th>
+                           </tr>`;
+    }
 
     var rendimento = 0;
     var cont = 1;
@@ -124,7 +136,10 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
             let rendReal = currencyToNumber(valorInvestido.value) * (Number(data.valores[i].svalor['$value'])/100);
             let rendRealMedia = currencyToNumber(valorInvestido.value) * ((rendimento/cont)/100);
 
-            tableBody.innerHTML += `<tr>
+            let pctRendimento = data.valores[i].svalor['$value'];
+            
+            if (idReg == 'poupanca') {
+                tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
                                     <td>${data.valores[i].svalor['$value']}</td>
                                     <td>${(rendimento/cont).toFixed(4)}</td>
@@ -132,6 +147,17 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
                                     <td>${numberToCurrency(rendReal.toFixed(2))}</td>
                                     <td>${numberToCurrency(rendRealMedia.toFixed(2))}</td>
                                 </tr>`;
+            } else if (idReg =='cdb') {
+                tableBody.innerHTML += `<tr>
+                                    <td>${dataFormatada}</td>
+                                    <td>${data.valores[i].svalor['$value']}</td>
+                                    <td>${numberToCurrency(currencyToNumber(valorInvestido.value))}</td>
+                                    <td>${numberToCurrency(calcularRendimentoAposIRCDB(180,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
+                                    <td>${numberToCurrency(calcularRendimentoAposIRCDB(360,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
+                                    <td>${numberToCurrency(calcularRendimentoAposIRCDB(720,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
+                                    <td>${numberToCurrency(calcularRendimentoAposIRCDB(721,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
+                                </tr>`;
+            }
 
             cont++;
         }
@@ -156,6 +182,8 @@ const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
                              <th>Total R$</th>
                            </tr>`;
 
+    var tempoEmDias = calcularTempoEmDias(tempoInvestValor.value, tempoInvestQtde.value);
+
     var rendimento = 0;
     var cont = 1;
     
@@ -165,11 +193,16 @@ const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
         let dataRef = new Date(colocarDataInput(dataFormatada));
 
         if (dataRef <= dtFim && dataRef >= dtInicio) {
-            rendimento += Number(data.valores[i].svalor['$value']);
+            if (idReg == 'poupanca') {
+                rendimento += Number(data.valores[i].svalor['$value']);
+            } else if (idReg == 'cdb') {
+                rendimento += calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(tempoEmDias, 
+                    (Number(data.valores[i].svalor['$value'])/100)*100), 100);
+            }
             cont++;
         }
     }
-
+    
     var mediaRendimento = (rendimento/(cont-1)).toFixed(4);
     var tempoEmMeses = calcularTempoEmMeses(tempoInvestValor.value, tempoInvestQtde.value);
     
