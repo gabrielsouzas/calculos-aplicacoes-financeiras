@@ -188,15 +188,15 @@ const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
         let dataRef = new Date(colocarDataInput(dataFormatada));
 
-        if (dataRef <= dtFim && dataRef >= dtInicio) {
+        //if (dataRef <= dtFim && dataRef >= dtInicio) {
             if (idReg == 'poupanca') {
                 rendimento += Number(data.valores[i].svalor['$value']);
             } else if (idReg == 'cdb') {
-                rendimento += calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(tempoEmDias, 
-                    (Number(data.valores[i].svalor['$value'])/100)*100), 100);
+                rendimento += Number(calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(tempoEmDias, 
+                    (Number(data.valores[i].svalor['$value'])/100)*100), 100));
             }
             cont++;
-        }
+        //}
     }
     
     var mediaRendimento = (rendimento/(cont-1)).toFixed(4);
