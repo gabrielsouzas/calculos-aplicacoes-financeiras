@@ -92,6 +92,8 @@ const valorInvestido = document.querySelector('#valor-invest')
 const calcularRendimento = async (data, dtInicio, dtFim) => {
     //const response = await fetch(`./webservice/${value}.json`);
     //const data = await response.json();
+
+    var pctCDI = 100;
     
     tableBody.innerHTML = '';
     if (idReg == 'poupanca') {
@@ -113,6 +115,7 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
                              <th>IR 720 dias (a. m.)</th>
                              <th>IR mais de 720 dias (a. m.)</th>
                            </tr>`;
+        pctCDI = inputPctCDI.value;
     }
 
     var rendimento = 0;
@@ -124,17 +127,17 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
         let dataRef = new Date(colocarDataInput(dataFormatada));
         
         if (dataRef <= dtFim && dataRef >= dtInicio) {
-
-            rendimento += Number(data.valores[i].svalor['$value']);
-            let rendReal = currencyToNumber(valorInvestido.value) * (Number(data.valores[i].svalor['$value'])/100);
+            
+            let pctRendimento = (Number(data.valores[i].svalor['$value'])*pctCDI)/100;
+            rendimento += Number(pctRendimento);
+            let rendReal = currencyToNumber(valorInvestido.value) * (Number(pctRendimento)/100);
             let rendRealMedia = currencyToNumber(valorInvestido.value) * ((rendimento/cont)/100);
 
-            let pctRendimento = data.valores[i].svalor['$value'];
             
             if (idReg == 'poupanca') {
                 tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
-                                    <td>${data.valores[i].svalor['$value']}</td>
+                                    <td>${pctRendimento.toFixed(4)}</td>
                                     <td>${(rendimento/cont).toFixed(4)}</td>
                                     <td>${numberToCurrency(currencyToNumber(valorInvestido.value))}</td>
                                     <td>${numberToCurrency(rendReal.toFixed(2))}</td>
@@ -143,7 +146,7 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
             } else if (idReg =='cdb') {
                 tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
-                                    <td>${data.valores[i].svalor['$value']}</td>
+                                    <td>${pctRendimento.toFixed(4)}</td>
                                     <td>${numberToCurrency(currencyToNumber(valorInvestido.value))}</td>
                                     <td>${numberToCurrency(calcularRendimentoAposIRCDB(180,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
                                     <td>${numberToCurrency(calcularRendimentoAposIRCDB(360,(Number(pctRendimento)/100)*currencyToNumber(valorInvestido.value).toFixed(2)))}</td>
