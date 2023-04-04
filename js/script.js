@@ -290,10 +290,12 @@ const containerValorInvestido = document.querySelector('.v-invest');
 const containerTempoInvestido = document.querySelector('.t-invest');
 
 const containerPorcentCDI = document.querySelector('.porcent-cdi');
+const containerJurosLivre = document.querySelector('.pct-juros-livre');
 
 containerValorInvestido.style.display = 'none';
 containerTempoInvestido.style.display = 'none';
 containerPorcentCDI.style.display = 'none';
+containerJurosLivre.style.display = 'none';
 
 selectFuncao.addEventListener('change', () => {
     if (selectFuncao.value == 'valores_periodo') {
@@ -404,6 +406,7 @@ const tituloHome = 'Bem vindo a calculadora finaceira!'; // com dados em tempo r
 const tituloPoupanca = 'Poupança - Dados Banco Central do Brasil';
 const tituloCDB = 'CDB - Dados Banco Central do Brasil';
 const tituloTesouroDireto = 'Tesouro Direto - Dados Banco Central do Brasil';
+const tituloJurosLivre = 'Juros Livre - Digite o valor dos juros que quiser para fazer os calculos';
 
 var codigoSerie = 195;
 
@@ -452,20 +455,29 @@ function trocarCalculoFinanceiro(id) {
         case 'home':
             tituloSecao.innerHTML = tituloHome;
             displayCDBFields(false);
+            displayJurosLivreFields(false);
             break;
         case 'poupanca':
             tituloSecao.innerHTML = tituloPoupanca;
             codigoSerie = 195;
             displayCDBFields(false);
+            displayJurosLivreFields(false);
             break;
         case 'cdb':
             tituloSecao.innerHTML = tituloCDB;
             codigoSerie = 4391;
             displayCDBFields(true);
+            displayJurosLivreFields(false);
             break;
         case 'tesouro-direto':
             tituloSecao.innerHTML = tituloTesouroDireto;
             displayCDBFields(false);
+            displayJurosLivreFields(false);
+            break;
+        case 'juros-livre':
+            tituloSecao.innerHTML = tituloJurosLivre;
+            displayCDBFields(false);
+            displayJurosLivreFields(true);
             break;
     
         default:
@@ -478,6 +490,14 @@ function displayCDBFields(value) {
         containerPorcentCDI.style.display = 'flex';
     } else {
         containerPorcentCDI.style.display = 'none';
+    }
+}
+
+function displayJurosLivreFields(value) {
+    if (value) {
+        containerJurosLivre.style.display = 'flex';
+    } else {
+        containerJurosLivre.style.display = 'none';
     }
 }
 
