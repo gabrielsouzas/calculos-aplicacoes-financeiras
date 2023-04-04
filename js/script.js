@@ -34,11 +34,36 @@ const tableBody = document.querySelector('table tbody');
 
 var idReg = 'poupanca';
 
+// JSON Juros Livre
+
+var jsonJurosLivre =
+{
+    "valores": [
+        {
+            "ano": {
+                "$value": "2023"
+            },
+            "dia": {
+                "$value": "1"
+            },
+            "mes": {
+                "$value": "1"
+            },
+            "svalor": {
+                "$value": "0.50"
+            },
+            "valor": {
+                "$value": "0.50"
+            }
+        },
+    ]
+}
+
 const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
     
     tableBody.innerHTML = '';
     
-    if (idReg == 'poupanca') {
+    if (idReg == 'poupanca' || idReg == 'juros-livre') {
         tableHead.innerHTML = `<tr>
                              <th>Data Inicial</th>
                              <th>Data Final</th>
@@ -57,13 +82,13 @@ const carregarDadosValoresPeriodo = async (data, dtInicio, dtFim) => {
 
     for (let i = 0; i < data.valores.length; i++) {
         let dataFormatada = `${putZero(data.valores[i].dia['$value'])}/${putZero(data.valores[i].mes['$value'])}/${data.valores[i].ano['$value']}`;
-
+        
         let dataRef = new Date(colocarDataInput(dataFormatada));
         
         let pctRendimento = data.valores[i].svalor['$value'];
         
         if (dataRef <= dtFim && dataRef >= dtInicio) {
-            if (idReg == 'poupanca') {
+            if (idReg == 'poupanca' || idReg == 'juros-livre') {
                 tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
                                     <td>${dataFormatada}</td>
@@ -96,7 +121,7 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
     var pctCDI = 100;
     
     tableBody.innerHTML = '';
-    if (idReg == 'poupanca') {
+    if (idReg == 'poupanca'  || idReg == 'juros-livre') {
         tableHead.innerHTML = `<tr>
                              <th>Data</th>
                              <th>Rendimento</th>
@@ -134,7 +159,7 @@ const calcularRendimento = async (data, dtInicio, dtFim) => {
             let rendRealMedia = currencyToNumber(valorInvestido.value) * ((rendimento/cont)/100);
 
             
-            if (idReg == 'poupanca') {
+            if (idReg == 'poupanca'  || idReg == 'juros-livre') {
                 tableBody.innerHTML += `<tr>
                                     <td>${dataFormatada}</td>
                                     <td>${pctRendimento.toFixed(4)}</td>
@@ -189,7 +214,7 @@ const calcularRendimentoPorTempo = async (data, dtInicio, dtFim) => {
         let dataRef = new Date(colocarDataInput(dataFormatada));
 
         //if (dataRef <= dtFim && dataRef >= dtInicio) {
-            if (idReg == 'poupanca') {
+            if (idReg == 'poupanca'  || idReg == 'juros-livre') {
                 rendimento += Number(data.valores[i].svalor['$value']);
             } else if (idReg == 'cdb') {
                 rendimento += Number(calcularPctRendimentoAposIRCDB(calcularRendimentoAposIRCDB(tempoEmDias, 
@@ -297,6 +322,8 @@ containerTempoInvestido.style.display = 'none';
 containerPorcentCDI.style.display = 'none';
 containerJurosLivre.style.display = 'none';
 
+const inputJurosLivre = document.querySelector('#pct-juros-livre-input');
+
 selectFuncao.addEventListener('change', () => {
     if (selectFuncao.value == 'valores_periodo') {
         containerValorInvestido.style.display = 'none';
@@ -314,8 +341,20 @@ btnCalcular.addEventListener('click', async (event) => {
         containerTabela.style.display = 'none';
         loader.style.display = 'block';
 
-        await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
+        if (idReg == 'juros-livre') {
+            var dataJSON = dataInicial.value.toLocaleString().split(',')[0].split('-');
+            jsonJurosLivre.valores[0].valor['$value'] = inputJurosLivre.value;
+            jsonJurosLivre.valores[0].svalor['$value'] = inputJurosLivre.value;
+            jsonJurosLivre.valores[0].dia['$value'] = dataJSON[2];
+            jsonJurosLivre.valores[0].mes['$value'] = dataJSON[1];
+            jsonJurosLivre.valores[0].ano['$value'] = dataJSON[0];
+
+            eventoCliqueBotaoCalcular(jsonJurosLivre);
+
+        } else {
+            await buscarDadosServidor(dataInicial.valueAsDate.toLocaleString().split(',')[0], 
                                     dataFinal.valueAsDate.toLocaleString().split(',')[0]);
+        }
 
         loader.style.display = 'none';
         containerTabela.style.display = 'block';
