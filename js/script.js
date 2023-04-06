@@ -408,7 +408,7 @@ function eventoCliqueBotaoCalcular(dadosJson) {
                 calcularRendimento(dadosJson/*'valoresVOReturn'*/, new Date(dataInicial.value), new Date(dataFinal.value));
             }
         } else {
-            alert("Para calcular o rendimento preencha o campo Valor Investido!")
+            showModal(true, 'Para calcular o rendimento preencha o campo Valor Investido!');
         }
     }
 }
@@ -492,7 +492,8 @@ for (let i = 0; i < navbarButtons.length; i++) {
 function trocarCalculoFinanceiro(id) {
     switch (id) {
         case 'home':
-            tituloSecao.innerHTML = tituloHome;
+            //tituloSecao.innerHTML = tituloHome;
+            loadHome(true);
             displayCDBFields(false);
             displayJurosLivreFields(false);
             break;
@@ -501,22 +502,26 @@ function trocarCalculoFinanceiro(id) {
             codigoSerie = 195;
             displayCDBFields(false);
             displayJurosLivreFields(false);
+            loadHome(false);
             break;
         case 'cdb':
             tituloSecao.innerHTML = tituloCDB;
             codigoSerie = 4391;
             displayCDBFields(true);
             displayJurosLivreFields(false);
+            loadHome(false);
             break;
         case 'tesouro-direto':
             tituloSecao.innerHTML = tituloTesouroDireto;
             displayCDBFields(false);
             displayJurosLivreFields(false);
+            loadHome(false);
             break;
         case 'juros-livre':
             tituloSecao.innerHTML = tituloJurosLivre;
             displayCDBFields(false);
             displayJurosLivreFields(true);
+            loadHome(false);
             break;
     
         default:
@@ -576,3 +581,32 @@ function showModal(show, spanText = '', h2Text = 'Atenção', buttonText = 'OK')
 function clickModal() {
     showModal(false);
 }
+
+// Carregar a Home
+const divsSection = document.querySelectorAll('.principal > div')
+const psSection = document.querySelectorAll('.principal > p')
+
+function loadHome(show) {
+    if (show) {
+        tituloSecao.innerHTML = tituloHome;
+        for (let i = 0; i < divsSection.length; i++) {
+            divsSection[i].style.display = 'none';
+        }
+        for (let i = 0; i < psSection.length; i++) {
+            psSection[i].style.display = 'block';
+        }
+    } else {
+        for (let i = 0; i < psSection.length; i++) {
+            psSection[i].style.display = 'none';
+        }
+        for (let i = 0; i < divsSection.length; i++) {
+            console.log(divsSection[i].classList.value)
+            let elementClass = divsSection[i].classList.value;
+            if (elementClass != 'loader') {
+                divsSection[i].style.display = 'flex';
+            }
+        }
+    }
+}
+
+loadHome(true);

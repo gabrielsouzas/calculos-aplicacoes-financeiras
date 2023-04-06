@@ -99,6 +99,11 @@ section {
     color: var(--cor-principal-clara);
 }
 
+.principal p {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
 .form {
     display: flex;
     flex-direction: column;
