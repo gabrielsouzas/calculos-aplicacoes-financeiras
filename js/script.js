@@ -543,12 +543,12 @@ function displayJurosLivreFields(value) {
 function validarInputs() {
     if (idReg == 'cdb') {
         if (inputPctCDI.value <= 0) {
-            showModal(true, 'A porcentagem do CDI deve ser informada e estar acima de zero!', 'OK');
+            showModal(true, 'A porcentagem do CDI deve ser informada e estar acima de zero!');
             return false;
         }
     } else if (idReg == 'juros-livre') {
         if (inputJurosLivre.value <= 0) {
-            showModal(true, 'Digite uma porcentagem acima de zero!', 'OK');
+            showModal(true, 'Digite uma porcentagem acima de zero!');
             return false;
         }
     }
@@ -558,12 +558,13 @@ function validarInputs() {
 // Modal
 
 const modal = document.querySelector('.modal');
-const modalText = document.querySelector('.modal h2');
+const modalTitle = document.querySelector('.modal h2');
 const modalSpan = document.querySelector('.modal span');
 const modalButton = document.querySelector('.modal button');
 
-function showModal(show, spanText = '', buttonText = '') {
+function showModal(show, spanText = '', h2Text = 'Atenção', buttonText = 'OK') {
     if (show) {
+        modalTitle.innerHTML = h2Text;
         modalSpan.innerHTML = spanText;
         modalButton.innerHTML = buttonText;
         modal.classList.add('modal-show')
@@ -572,6 +573,6 @@ function showModal(show, spanText = '', buttonText = '') {
     }
 }
 
-function clicouOk() {
+function clickModal() {
     showModal(false);
 }
