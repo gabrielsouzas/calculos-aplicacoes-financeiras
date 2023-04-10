@@ -1,3 +1,5 @@
+// Serviço criado com o NSSM - App Financeiro
+
 var express = require('express'), app = express(), port = process.env.PORT || 3333;
 
 var soap = require('soap');
