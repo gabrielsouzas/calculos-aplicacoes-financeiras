@@ -372,6 +372,7 @@ btnCalcular.addEventListener('click', async (event) => {
 
 // Requisição ao servidor dos dados do webservice
 
+// GET
 const buscarDadosServidor = async (dataInicial, dataFinal) => {
     const response = await fetch(`http://localhost:3333/webservice/?serie=${codigoSerie}&datainicio=${dataInicial}&datafim=${dataFinal}`,
     {   method: 'GET',
@@ -383,6 +384,25 @@ const buscarDadosServidor = async (dataInicial, dataFinal) => {
     eventoCliqueBotaoCalcular(dados);
 
 }
+
+// POST
+const buscarDadosServidorPOST = async (dataInicial, dataFinal) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        codigoSerie: codigoSerie,
+        dataInicial: dataInicial,
+        dataFinal: dataFinal
+      })
+    };
+  
+    const response = await fetch('http://localhost:3333/webservice/', requestOptions);
+    const dados = await response.json();
+  
+    //return dados;
+    eventoCliqueBotaoCalcular(dados);
+  };
 
 // Verifica se um objeto está vazio
 function isEmpty(obj) {

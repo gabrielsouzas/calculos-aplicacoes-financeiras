@@ -1,50 +1,43 @@
-// Serviço criado com o NSSM - App Financeiro
-
-var express = require('express'), app = express(), port = process.env.PORT || 3333;
-
-var soap = require('soap');
+const http = require('http');
 const fs = require('fs');
+const path = require('path');
 
-app.listen(port);
+// SERVIDOR HTTP
+const PORT = 8080;
 
-app.get("/webservice", (req, res) => {
-    const serie = req.query.serie;
-    const data_inicio = req.query.datainicio;
-    const data_fim = req.query.datafim;
+const server = http.createServer((request, response) => {
+    let filePath = "." + request.url;
+    if (filePath === "./") {
+        filePath = "./index.html";
+    }
 
-    res.set({
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-    });
+    const extname = path.extname(filePath);
+    let contentType = "text/html";
+    switch (extname) {
+        case ".js":
+            contentType = "text/javascript";
+            break;
+        case ".css":
+            contentType = "text/css";
+            break;
+    }
 
-    var url = 'https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl';
-    
-    soap.createClient(url, function (err, client) {
-        client.getValoresSeriesVO({
-            in0: [serie],
-            in1: data_inicio,
-            in2: data_fim,
-        }, function (err, result) {
-            if (err) {
-                return console.log(err)
-            };
-            // Removido o recarregamento de pagina do live server para executar esse comando
-            //writeJsonFile('valoresVOReturn', result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            res.json(result.getValoresSeriesVOReturn.getValoresSeriesVOReturn.valores)
-            
-        });
+    fs.readFile(filePath, (error, content) => {
+        if (error) {
+            if (error.code == "ENOENT") {
+                response.writeHead(404, { "Content-Type": "text/html" });
+                response.end("<h1>404 Not Found</h1>");
+            } else {
+                response.writeHead(500);
+                response.end(`Internal Server Error: ${error.code}`);
+            }
+        } else {
+            response.writeHead(200, { "Content-Type": contentType });
+            response.end(content, "utf-8");
+        }
     });
 });
 
-// escrever os dados em um arquivo local (json)
-function writeJsonFile(fileName, fileData){
-    fs.writeFile(`${fileName}.json`, JSON.stringify(fileData, null, 2), err => {
-      if(err) throw new Error('Erro: '+ err)
-  
-      console.log(`${fileName} Dados salvos com sucesso!`)
-    })
-}
-
-
-
-console.log(`Servidor rodando na porta: ${port}`);
+server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}/`);
+  });
