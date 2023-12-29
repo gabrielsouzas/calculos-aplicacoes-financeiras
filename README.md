@@ -1,8 +1,8 @@
 # Calcular rendimentos de aplicações financeiras
 
-## 🚧 Em desenvolvimento 🚧
+Projeto para monitorar os rendimentos financeiros de acordo com as porcentagens liberadas pelas instituições governamentais brasileiras.
 
-</br>
+## 🚧 Em desenvolvimento 🚧
 
 ## Consumo do WebService BCB
 >Informações da página [SGS - Sistema Gerenciador de Séries Temporais](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries)
